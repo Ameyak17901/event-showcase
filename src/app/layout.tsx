@@ -14,6 +14,7 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
+import SupabaseProvider from "@/utils/supabase/supabase-provider";
 
 const goldman = Goldman({
   subsets: ["latin"],
@@ -43,24 +44,26 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} ${goldman.variable} antialiased`}
-        >
-          <header className="flex justify-end items-center p-4 gap-4 h-16">
-            <SignedOut>
-              <SignInButton />
-              <SignUpButton>
-                <Button variant="outline">Sign Up</Button>
-              </SignUpButton>
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-          </header>
-          {children}
-        </body>
-      </html>
+      <SupabaseProvider>
+        <html lang="en">
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} ${goldman.variable} antialiased`}
+          >
+            <header className="flex justify-end items-center p-4 gap-4 h-16">
+              <SignedOut>
+                <SignInButton />
+                <SignUpButton>
+                  <Button variant="outline">Sign Up</Button>
+                </SignUpButton>
+              </SignedOut>
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+            </header>
+            {children}
+          </body>
+        </html>
+      </SupabaseProvider>
     </ClerkProvider>
   );
 }

@@ -1,0 +1,3 @@
+[auth.third_party.clerk]
+enabled = true
+domain = "https://electric-grouse-61.clerk.accounts.dev"
