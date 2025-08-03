@@ -11,13 +11,10 @@ export const useEvents = () => {
   const tier = user?.publicMetadata.tier;
   const { session } = useSession();
   const { supabase, isLoaded } = useSupabase()
-  console.log();
   useEffect(() => {
     if (!session || !supabase) return;
     
     const fetchEvents = async () => {
-      const sess = await session?.getToken();
-      console.log(sess);
       const { data: eventsData, error } = await supabase
         .from("events")
         .select("*");
@@ -29,7 +26,6 @@ export const useEvents = () => {
 
     fetchEvents();
   }, [tier, session, supabase]);
-  console.log(events);
 
   return { events, isLoaded };
 };

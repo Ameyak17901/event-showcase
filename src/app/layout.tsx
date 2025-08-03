@@ -43,12 +43,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <SupabaseProvider>
-        <html lang="en">
-          <body
-            className={`${geistSans.variable} ${geistMono.variable} ${goldman.variable} antialiased`}
-          >
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} ${goldman.variable} antialiased`}
+      >
+        <ClerkProvider>
+          <SupabaseProvider>
             <header className="flex justify-end items-center p-4 gap-4 h-16">
               <SignedOut>
                 <SignInButton />
@@ -61,9 +61,9 @@ export default function RootLayout({
               </SignedIn>
             </header>
             {children}
-          </body>
-        </html>
-      </SupabaseProvider>
-    </ClerkProvider>
+          </SupabaseProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }

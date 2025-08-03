@@ -11,7 +11,6 @@ import { formatDate } from "@/lib/utils";
 
 import type { Event as EventType } from "@/types/event";
 import { useSupabase } from "@/utils/supabase/supabase-provider";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 interface Props {
@@ -19,7 +18,6 @@ interface Props {
 }
 
 export const EventCard = ({ event }: Props) => {
-  console.log(event);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const { supabase } = useSupabase();
   useEffect(() => {
@@ -31,20 +29,19 @@ export const EventCard = ({ event }: Props) => {
       setImageUrl(image.publicUrl);
     };
     getImagePublicUrl();
-  }, []);
-  console.log(imageUrl);
+  }, [supabase, event.image_url]);
   return (
-    <Card>
+    <Card className="flex flex-col w-full">
       <CardHeader>
         <CardTitle>{event.title}</CardTitle>
         <CardDescription>{event.description}</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="w-full">
         <p>{formatDate(event.event_date)}</p>
         <p>
           <span>{event.tier}</span>
         </p>
-        <Image src={imageUrl || ""} alt="Event image" width={22} height={22} />
+        <img src={imageUrl || ""} alt="Event image" width={22} height={22} />
       </CardContent>
     </Card>
   );
