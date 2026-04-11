@@ -10,14 +10,15 @@ export const useEvents = () => {
   const { user } = useUser();
   const tier = user?.publicMetadata.tier;
   const { session } = useSession();
-  const { supabase, isLoaded } = useSupabase()
+  const { supabase, isLoaded } = useSupabase();
   useEffect(() => {
     if (!session || !supabase) return;
-    
+
     const fetchEvents = async () => {
       const { data: eventsData, error } = await supabase
         .from("events")
-        .select("*");
+        .select("*")
+        .filter("tier", "lte", tier || "free");
       if (error) {
         throw error;
       }
