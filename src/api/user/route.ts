@@ -1,19 +1,15 @@
-import { currentUser, clerkClient } from "@clerk/nextjs/server";
-import { NextResponse, NextRequest } from "next/server";
+import { auth } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
-  const { tier } = await req.json();
-  const user = await currentUser();
-  if (!user) {
-    return new NextResponse("Unauthorized", { status: 401 });
+export async function GET() {
+  // Use `auth()` to access the user's session claims
+  const { isAuthenticated, sessionClaims } = await auth();
+
+  if (!isAuthenticated) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const client = await clerkClient();
-  const updatedUser = await client.users.updateUserMetadata(user.id, {
-    publicMetadata: {
-      tier,
-    },
-  });
+  const userId = sessionClaims.userId;
 
-  return NextResponse.json({ user: updatedUser }, { status: 200 });
+  return NextResponse.json({ userId });
 }
