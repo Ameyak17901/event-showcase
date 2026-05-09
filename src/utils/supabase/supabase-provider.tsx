@@ -26,12 +26,17 @@ export default function SupabaseProvider({ children }: Props) {
   useEffect(() => {
     if (!session) return;
 
+    const supabaseKey =
+      process.env.NEXT_PUBLIC_SUPABASE_KEY ??
+      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
+      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY;
+
     const client = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+      supabaseKey!,
       {
-        accessToken: () => session?.getToken(),
-      }
+        accessToken: () => session?.getToken({ template: "supabase" }),
+      },
     );
 
     setSupabase(client);

@@ -94,28 +94,31 @@ export function AddEventDialog({
 
   const onSubmit = async (data: AddEventFormData) => {
     console.log("Form data:", data);
-    if (!supabase) {
-      toast.error("Supabase client not initialized");
+    console.log("image file type: ", data.image.type);
+    if (!isSignedIn) {
+      toast.error("You must be signed in to create an event");
+      return;
+    }
+    if (!supabaseLoaded || !supabase) {
+      toast.error("Supabase is still loading. Please try again.");
       return;
     }
 
     setIsLoading(true);
 
     try {
-      if (!isSignedIn || !supabaseLoaded) {
-        toast.error("You must be signed in to create an event");
-        setIsLoading(false);
-        return;
-      }
-
       // Upload image to Supabase Storage
       const timestamp = Date.now();
       const fileName = `events/${timestamp}-${data.image.name}`;
+      console.log("image data: ", typeof data.image);
 
       const { error: uploadError } = await supabase.storage
         .from("event-images")
-        .upload(fileName, data.image);
+        .upload(fileName, data.image, {
+          contentType: data.image.type,
+        });
 
+      console.log("event upload error: ", uploadError);
       if (uploadError) {
         toast.error("Failed to upload image: " + uploadError.message);
         setIsLoading(false);
