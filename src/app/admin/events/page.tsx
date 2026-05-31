@@ -10,7 +10,7 @@ import { Plus, Edit2, Trash2, Calendar, Users } from "lucide-react";
 export default function AdminEventsPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const { events, isLoaded } = useEvents();
-
+  console.log("events fetched: ", events);
   const handleEventCreated = () => {
     // Refetch events - in a real app, you'd use a state management solution
     console.log("Event created successfully");
@@ -21,6 +21,9 @@ export default function AdminEventsPage() {
       <div className="max-w-7xl mx-auto p-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+          <div className="flex gap-1">
+
+
           <div>
             <h1 className="text-4xl font-bold text-slate-900">
               Event Management
@@ -33,10 +36,11 @@ export default function AdminEventsPage() {
             onClick={() => setDialogOpen(true)}
             size="lg"
             className="gap-2 bg-blue-600 hover:bg-blue-700"
-          >
+            >
             <Plus className="h-5 w-5" />
             Add New Event
           </Button>
+        </div>
         </div>
 
         {/* Stats */}

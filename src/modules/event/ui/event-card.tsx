@@ -39,10 +39,10 @@ export const EventCard = ({ event }: Props) => {
         <CardTitle>{event.title}</CardTitle>
         <CardDescription>{event.description}</CardDescription>
       </CardHeader>
-      <CardContent className="w-fit">
-        <p>{formatDate(event.event_date)}</p>
-        <p>
-          <span>{event.tier}</span>
+      <CardContent className="w-fit gap-y-1">
+        <p className="text-sm text-slate-800">{formatDate(event.event_date)}</p>
+        <p className="">
+          <span className="text-sm border rounded-md text-slate-500 p-1">{event.tier}</span>
         </p>
         <Image
           src={imageUrl || "window.svg"}

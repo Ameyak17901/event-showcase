@@ -60,7 +60,7 @@ export default function RootLayout({
                 <UserButton />
               </SignedIn>
             </header>
-            <main className="flex w-full">{children}</main>
+            <main className="flex w-full justify-center">{children}</main>
           </SupabaseProvider>
         </ClerkProvider>
       </body>
