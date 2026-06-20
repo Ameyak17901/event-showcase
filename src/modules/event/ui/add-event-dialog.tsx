@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -108,8 +109,8 @@ export function AddEventDialog({
 
     try {
       // Upload image to Supabase Storage
-      const timestamp = Date.now();
-      const fileName = `events/${timestamp}-${data.image.name}`;
+      const uniqueId = crypto.randomUUID();
+      const fileName = `events/${uniqueId}-${data.image.name}`;
       console.log("image data: ", typeof data.image);
 
       const { error: uploadError } = await supabase.storage

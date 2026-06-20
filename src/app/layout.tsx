@@ -6,15 +6,9 @@ import { Button } from "@/components/ui/button";
 
 import "./globals.css";
 
-import {
-  ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import SupabaseProvider from "@/utils/supabase/supabase-provider";
+import { HeaderActions } from "@/components/header-actions";
 
 const goldman = Goldman({
   subsets: ["latin"],
@@ -50,15 +44,7 @@ export default function RootLayout({
         <ClerkProvider>
           <SupabaseProvider>
             <header className="flex justify-end items-center p-4 gap-4 h-16">
-              <SignedOut>
-                <SignInButton />
-                <SignUpButton>
-                  <Button variant="outline">Sign Up</Button>
-                </SignUpButton>
-              </SignedOut>
-              <SignedIn>
-                <UserButton />
-              </SignedIn>
+              <HeaderActions />
             </header>
             <main className="flex w-full justify-center">{children}</main>
           </SupabaseProvider>
