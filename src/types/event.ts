@@ -7,4 +7,6 @@ export interface Event {
   event_date: Date;
   image_url: string;
   tier: tier;
+  user_id?: string;
 }
+

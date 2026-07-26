@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { Toaster } from "react-hot-toast";
@@ -12,18 +12,21 @@ export default function AdminLayout({
 }) {
   const { user, isLoaded } = useUser();
   const router = useRouter();
+  const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
-    if (!isLoaded) return;
+    setHasMounted(true);
+  }, []);
 
-    // Check if user is admin (you can set this role in Clerk)
-    // For now, we'll just check if user exists
+  useEffect(() => {
+    if (!hasMounted || !isLoaded) return;
+
     if (!user) {
       router.push("/sign-in");
     }
-  }, [user, isLoaded, router]);
+  }, [user, isLoaded, hasMounted, router]);
 
-  if (!isLoaded || !user) {
+  if (!hasMounted || !isLoaded || !user) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="animate-pulse text-slate-600">Loading...</div>
@@ -33,3 +36,4 @@ export default function AdminLayout({
 
   return <>{children}<Toaster position="top-center" /></>;
 }
+

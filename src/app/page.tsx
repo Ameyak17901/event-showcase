@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { EventsView } from "@/modules/event/views/events-view";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
@@ -8,14 +8,19 @@ import { useRouter } from "next/navigation";
 export default function Home() {
   const { isSignedIn, isLoaded } = useUser();
   const router = useRouter();
+  const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
-    if (isLoaded && !isSignedIn) {
+    setHasMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (hasMounted && isLoaded && !isSignedIn) {
       router.push("/sign-in");
     }
-  }, [isLoaded, isSignedIn, router]);
+  }, [hasMounted, isLoaded, isSignedIn, router]);
 
-  if (!isLoaded) {
+  if (!hasMounted || !isLoaded) {
     return (
       <div className="flex w-full h-full items-center justify-center min-h-[50vh]">
         <span className="animate-spin text-2xl">⏳</span>
@@ -33,3 +38,4 @@ export default function Home() {
     </div>
   );
 }
+

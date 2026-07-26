@@ -29,7 +29,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Image from "next/image";
-import { useAuth } from "@clerk/nextjs";
+import { useAuth, useUser } from "@clerk/nextjs";
 
 // Validation schema
 const addEventSchema = z.object({
@@ -69,6 +69,7 @@ export function AddEventDialog({
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const { supabase, isLoaded: supabaseLoaded } = useSupabase();
   const { isSignedIn } = useAuth();
+  const { user } = useUser();
 
   const {
     register,
@@ -126,14 +127,16 @@ export function AddEventDialog({
         return;
       }
 
-      // Insert event into database
+      // Insert event into database with user_id
       const { error: insertError } = await supabase.from("events").insert({
         title: data.title,
         description: data.description,
         event_date: new Date(data.event_date).toISOString(),
         image_url: fileName,
         tier: data.tier,
+        user_id: user?.id,
       });
+
 
       if (insertError) {
         toast.error("Failed to create event: " + insertError.message);
